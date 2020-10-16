@@ -6,7 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.ryanrvldo.tourismapp.R
-import com.ryanrvldo.tourismapp.core.data.source.local.entity.TourismEntity
+import com.ryanrvldo.tourismapp.core.domain.model.Tourism
 import com.ryanrvldo.tourismapp.core.ui.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_detail_tourism.*
 import kotlinx.android.synthetic.main.content_detail_tourism.*
@@ -25,16 +25,18 @@ class DetailTourismActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val factory = ViewModelFactory.getInstance(this)
-        detailTourismViewModel = ViewModelProvider(this, factory)[DetailTourismViewModel::class.java]
+        detailTourismViewModel =
+            ViewModelProvider(this, factory)[DetailTourismViewModel::class.java]
 
-        val detailTourism = intent.getParcelableExtra<TourismEntity>(EXTRA_DATA)
+        val detailTourism = intent.getParcelableExtra<Tourism>(EXTRA_DATA)
         showDetailTourism(detailTourism)
     }
 
-    private fun showDetailTourism(detailTourism: TourismEntity?) {
+    private fun showDetailTourism(detailTourism: Tourism?) {
         detailTourism?.let {
             supportActionBar?.title = detailTourism.name
             tv_detail_description.text = detailTourism.description
+
             Glide.with(this@DetailTourismActivity)
                 .load(detailTourism.image)
                 .into(text_detail_image)

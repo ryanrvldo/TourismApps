@@ -1,11 +1,12 @@
 package com.ryanrvldo.tourismapp.home
 
 import androidx.lifecycle.ViewModel
-import com.ryanrvldo.tourismapp.core.data.TourismRepository
+import com.ryanrvldo.tourismapp.core.data.TourismRepositoryImpl
+import com.ryanrvldo.tourismapp.core.domain.usecase.TourismUseCase
 
-class HomeViewModel(tourismRepository: TourismRepository) : ViewModel() {
+class HomeViewModel(tourismUseCase: TourismUseCase) : ViewModel() {
 
-    val tourism = tourismRepository.getAllTourism()
+    val tourism = tourismUseCase.getAllTourism()
 
 }
 

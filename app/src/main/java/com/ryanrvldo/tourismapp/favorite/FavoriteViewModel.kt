@@ -1,11 +1,12 @@
 package com.ryanrvldo.tourismapp.favorite
 
 import androidx.lifecycle.ViewModel
-import com.ryanrvldo.tourismapp.core.data.TourismRepository
+import com.ryanrvldo.tourismapp.core.data.TourismRepositoryImpl
+import com.ryanrvldo.tourismapp.core.domain.usecase.TourismUseCase
 
-class FavoriteViewModel(tourismRepository: TourismRepository) : ViewModel() {
+class FavoriteViewModel(tourismUseCase: TourismUseCase) : ViewModel() {
 
-    val favoriteTourism = tourismRepository.getFavoriteTourism()
+    val favoriteTourism = tourismUseCase.getFavoriteTourism()
 
 }
 

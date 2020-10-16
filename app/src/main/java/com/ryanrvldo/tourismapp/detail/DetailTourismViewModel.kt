@@ -1,10 +1,13 @@
 package com.ryanrvldo.tourismapp.detail
 
 import androidx.lifecycle.ViewModel
-import com.ryanrvldo.tourismapp.core.data.TourismRepository
-import com.ryanrvldo.tourismapp.core.data.source.local.entity.TourismEntity
+import com.ryanrvldo.tourismapp.core.domain.model.Tourism
+import com.ryanrvldo.tourismapp.core.domain.usecase.TourismUseCase
 
-class DetailTourismViewModel(private val tourismRepository: TourismRepository) : ViewModel() {
-    fun setFavoriteTourism(tourism: TourismEntity, newStatus:Boolean) = tourismRepository.setFavoriteTourism(tourism, newStatus)
+class DetailTourismViewModel(private val tourismUseCase: TourismUseCase) : ViewModel() {
+
+    fun setFavoriteTourism(tourism: Tourism, newStatus: Boolean) =
+        tourismUseCase.setFavoriteTourism(tourism, newStatus)
+
 }
 
