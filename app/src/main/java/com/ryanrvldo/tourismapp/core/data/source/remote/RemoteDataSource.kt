@@ -1,15 +1,15 @@
 package com.ryanrvldo.tourismapp.core.data.source.remote
 
+import android.annotation.SuppressLint
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.ryanrvldo.tourismapp.core.data.source.remote.network.ApiResponse
 import com.ryanrvldo.tourismapp.core.data.source.remote.network.TourismApiService
-import com.ryanrvldo.tourismapp.core.data.source.remote.response.ListTourismResponse
 import com.ryanrvldo.tourismapp.core.data.source.remote.response.TourismResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 
 class RemoteDataSource private constructor(private val tourismApiService: TourismApiService) {
 
@@ -26,29 +26,24 @@ class RemoteDataSource private constructor(private val tourismApiService: Touris
             }
     }
 
-    fun getAllTourism(): LiveData<ApiResponse<List<TourismResponse>>> {
-        val resultData = MutableLiveData<ApiResponse<List<TourismResponse>>>()
+    @SuppressLint("CheckResult")
+    fun getAllTourism(): Flowable<ApiResponse<List<TourismResponse>>> {
+        val resultData = PublishSubject.create<ApiResponse<List<TourismResponse>>>()
 
         //get data from remote api
-        val client = tourismApiService.getList()
+        tourismApiService.getList()
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .take(1)
+            .subscribe({ response ->
+                val dataList = response.tourismResponseList
+                resultData.onNext(if (dataList.isNotEmpty()) ApiResponse.Success(dataList) else ApiResponse.Empty)
+            }, { error ->
+                resultData.onNext(ApiResponse.Error(error.message.toString()))
+                Log.e(TAG, error.toString())
+            })
 
-        client.enqueue(object : Callback<ListTourismResponse> {
-            override fun onResponse(
-                call: Call<ListTourismResponse>,
-                response: Response<ListTourismResponse>
-            ) {
-                val dataList = response.body()?.tourismResponseList
-                resultData.value =
-                    if (dataList != null) ApiResponse.Success(dataList) else ApiResponse.Empty
-            }
-
-            override fun onFailure(call: Call<ListTourismResponse>, t: Throwable) {
-                resultData.value = ApiResponse.Error(t.message.toString())
-                Log.e(TAG, t.message.toString())
-            }
-        })
-
-        return resultData
+        return resultData.toFlowable((BackpressureStrategy.BUFFER))
     }
 }
 
