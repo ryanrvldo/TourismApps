@@ -1,15 +1,15 @@
 package com.ryanrvldo.tourismapp.core.domain.usecase
 
-import androidx.lifecycle.LiveData
 import com.ryanrvldo.tourismapp.core.data.Resource
 import com.ryanrvldo.tourismapp.core.domain.model.Tourism
+import kotlinx.coroutines.flow.Flow
 
 interface TourismUseCase {
 
 
-    fun getAllTourism(): LiveData<Resource<List<Tourism>>>
+    fun getAllTourism(): Flow<Resource<List<Tourism>>>
 
-    fun getFavoriteTourism(): LiveData<List<Tourism>>
+    fun getFavoriteTourism(): Flow<List<Tourism>>
 
     fun setFavoriteTourism(tourism: Tourism, state: Boolean)
 

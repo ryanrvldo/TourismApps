@@ -1,15 +1,13 @@
 package com.ryanrvldo.tourismapp.core.data.source.remote
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.ryanrvldo.tourismapp.core.data.source.remote.network.ApiResponse
 import com.ryanrvldo.tourismapp.core.data.source.remote.network.TourismApiService
-import com.ryanrvldo.tourismapp.core.data.source.remote.response.ListTourismResponse
 import com.ryanrvldo.tourismapp.core.data.source.remote.response.TourismResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 class RemoteDataSource private constructor(private val tourismApiService: TourismApiService) {
 
@@ -26,29 +24,22 @@ class RemoteDataSource private constructor(private val tourismApiService: Touris
             }
     }
 
-    fun getAllTourism(): LiveData<ApiResponse<List<TourismResponse>>> {
-        val resultData = MutableLiveData<ApiResponse<List<TourismResponse>>>()
-
+    fun getAllTourism(): Flow<ApiResponse<List<TourismResponse>>> {
         //get data from remote api
-        val client = tourismApiService.getList()
-
-        client.enqueue(object : Callback<ListTourismResponse> {
-            override fun onResponse(
-                call: Call<ListTourismResponse>,
-                response: Response<ListTourismResponse>
-            ) {
-                val dataList = response.body()?.tourismResponseList
-                resultData.value =
-                    if (dataList != null) ApiResponse.Success(dataList) else ApiResponse.Empty
+        return flow {
+            try {
+                val response = tourismApiService.getList()
+                val dataList = response.tourismResponseList
+                if (dataList.isNotEmpty()) {
+                    emit(ApiResponse.Success(response.tourismResponseList))
+                } else {
+                    emit(ApiResponse.Empty)
+                }
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(e.toString()))
+                Log.e(TAG, e.toString())
             }
-
-            override fun onFailure(call: Call<ListTourismResponse>, t: Throwable) {
-                resultData.value = ApiResponse.Error(t.message.toString())
-                Log.e(TAG, t.message.toString())
-            }
-        })
-
-        return resultData
+        }.flowOn(Dispatchers.IO)
     }
 }
 

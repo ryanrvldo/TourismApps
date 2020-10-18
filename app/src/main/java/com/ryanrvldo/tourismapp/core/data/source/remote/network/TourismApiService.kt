@@ -7,6 +7,6 @@ import retrofit2.http.GET
 interface TourismApiService {
 
     @GET("list")
-    fun getList(): Call<ListTourismResponse>
+    suspend fun getList(): ListTourismResponse
 
 }
