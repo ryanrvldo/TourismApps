@@ -9,23 +9,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-class RemoteDataSource private constructor(private val tourismApiService: TourismApiService) {
-
-    companion object {
-
-        const val TAG = "RemoteDataSource"
-
-        @Volatile
-        private var instance: RemoteDataSource? = null
-
-        fun getInstance(service: TourismApiService): RemoteDataSource =
-            instance ?: synchronized(this) {
-                instance ?: RemoteDataSource(service)
-            }
-    }
+class RemoteDataSource(private val tourismApiService: TourismApiService) {
 
     fun getAllTourism(): Flow<ApiResponse<List<TourismResponse>>> {
-        //get data from remote api
         return flow {
             try {
                 val response = tourismApiService.getList()
@@ -40,6 +26,10 @@ class RemoteDataSource private constructor(private val tourismApiService: Touris
                 Log.e(TAG, e.toString())
             }
         }.flowOn(Dispatchers.IO)
+    }
+
+    companion object {
+        const val TAG = "RemoteDataSource"
     }
 }
 

@@ -11,25 +11,11 @@ import com.ryanrvldo.tourismapp.core.utils.DataMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class TourismRepositoryImpl private constructor(
+class TourismRepositoryImpl(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
 ) : TourismRepository {
-
-    companion object {
-        @Volatile
-        private var instance: TourismRepositoryImpl? = null
-
-        fun getInstance(
-            remoteData: RemoteDataSource,
-            localData: LocalDataSource,
-            appExecutors: AppExecutors
-        ): TourismRepositoryImpl =
-            instance ?: synchronized(this) {
-                instance ?: TourismRepositoryImpl(remoteData, localData, appExecutors)
-            }
-    }
 
     override fun getAllTourism(): Flow<Resource<List<Tourism>>> =
         object : NetworkBoundResource<List<Tourism>, List<TourismResponse>>(appExecutors) {
