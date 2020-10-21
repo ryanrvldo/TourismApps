@@ -3,8 +3,11 @@ package com.ryanrvldo.tourismapp.core.domain.usecase.impl
 import com.ryanrvldo.tourismapp.core.domain.model.Tourism
 import com.ryanrvldo.tourismapp.core.domain.repository.TourismRepository
 import com.ryanrvldo.tourismapp.core.domain.usecase.TourismUseCase
+import javax.inject.Inject
 
-class TourismUseCaseImpl(private val tourismRepository: TourismRepository) : TourismUseCase {
+class TourismUseCaseImpl @Inject constructor(
+    private val tourismRepository: TourismRepository
+) : TourismUseCase {
 
     override fun getAllTourism() = tourismRepository.getAllTourism()
 

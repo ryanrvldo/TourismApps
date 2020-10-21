@@ -1,26 +1,18 @@
 package com.ryanrvldo.tourismapp.core.ui
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.ryanrvldo.tourismapp.core.di.Injection
 import com.ryanrvldo.tourismapp.core.domain.usecase.TourismUseCase
 import com.ryanrvldo.tourismapp.detail.DetailTourismViewModel
+import com.ryanrvldo.tourismapp.di.AppScope
 import com.ryanrvldo.tourismapp.favorite.FavoriteViewModel
 import com.ryanrvldo.tourismapp.home.HomeViewModel
+import javax.inject.Inject
 
-class ViewModelFactory private constructor(private val tourismUseCase: TourismUseCase) :
-    ViewModelProvider.NewInstanceFactory() {
-
-    companion object {
-        @Volatile
-        private var instance: ViewModelFactory? = null
-
-        fun getInstance(context: Context): ViewModelFactory =
-            instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(Injection.provideTourismUseCase(context))
-            }
-    }
+@AppScope
+class ViewModelFactory @Inject constructor(
+    private val tourismUseCase: TourismUseCase
+) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T =

@@ -8,38 +8,31 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class RemoteDataSource private constructor(private val tourismApiService: TourismApiService) {
+@Singleton
+class RemoteDataSource @Inject constructor(private val tourismApiService: TourismApiService) {
 
     companion object {
 
         const val TAG = "RemoteDataSource"
 
-        @Volatile
-        private var instance: RemoteDataSource? = null
-
-        fun getInstance(service: TourismApiService): RemoteDataSource =
-            instance ?: synchronized(this) {
-                instance ?: RemoteDataSource(service)
-            }
     }
 
-    fun getAllTourism(): Flow<ApiResponse<List<TourismResponse>>> {
-        //get data from remote api
-        return flow {
-            try {
-                val response = tourismApiService.getList()
-                val dataList = response.tourismResponseList
-                if (dataList.isNotEmpty()) {
-                    emit(ApiResponse.Success(response.tourismResponseList))
-                } else {
-                    emit(ApiResponse.Empty)
-                }
-            } catch (e: Exception) {
-                emit(ApiResponse.Error(e.toString()))
+    fun getAllTourism(): Flow<ApiResponse<List<TourismResponse>>> = flow {
+        try {
+            val response = tourismApiService.getList()
+            val dataList = response.tourismResponseList
+            if (dataList.isNotEmpty()) {
+                emit(ApiResponse.Success(response.tourismResponseList))
+            } else {
+                emit(ApiResponse.Empty)
+            }
+        } catch (e: Exception) {
+            emit(ApiResponse.Error(e.toString()))
                 Log.e(TAG, e.toString())
             }
         }.flowOn(Dispatchers.IO)
-    }
 }
 
