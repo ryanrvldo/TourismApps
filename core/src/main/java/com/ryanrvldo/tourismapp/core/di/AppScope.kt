@@ -1,4 +1,4 @@
-package com.ryanrvldo.tourismapp.di
+package com.ryanrvldo.tourismapp.core.di
 
 import javax.inject.Scope
 

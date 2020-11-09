@@ -1,5 +1,6 @@
 package com.ryanrvldo.tourismapp.di
 
+import com.ryanrvldo.tourismapp.core.di.AppScope
 import com.ryanrvldo.tourismapp.core.di.CoreComponent
 import com.ryanrvldo.tourismapp.detail.DetailTourismActivity
 import com.ryanrvldo.tourismapp.favorite.FavoriteFragment

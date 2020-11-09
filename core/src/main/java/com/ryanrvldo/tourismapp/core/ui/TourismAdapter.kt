@@ -1,12 +1,11 @@
 package com.ryanrvldo.tourismapp.core.ui
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.ryanrvldo.tourismapp.R
+import com.ryanrvldo.tourismapp.core.R
 import com.ryanrvldo.tourismapp.core.domain.model.Tourism
 import kotlinx.android.synthetic.main.item_list_tourism.view.*
 import java.util.*

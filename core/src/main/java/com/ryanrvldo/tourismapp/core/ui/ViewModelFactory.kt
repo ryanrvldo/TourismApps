@@ -2,7 +2,7 @@ package com.ryanrvldo.tourismapp.core.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.ryanrvldo.tourismapp.di.AppScope
+import com.ryanrvldo.tourismapp.core.di.AppScope
 import javax.inject.Inject
 import javax.inject.Provider
 
