@@ -5,22 +5,28 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.ryanrvldo.tourismapp.BaseApplication
 import com.ryanrvldo.tourismapp.R
 import com.ryanrvldo.tourismapp.core.domain.model.Tourism
-import dagger.hilt.android.AndroidEntryPoint
+import com.ryanrvldo.tourismapp.core.ui.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_detail_tourism.*
 import kotlinx.android.synthetic.main.content_detail_tourism.*
+import javax.inject.Inject
 
-@AndroidEntryPoint
 class DetailTourismActivity : AppCompatActivity() {
 
-    private val detailTourismViewModel: DetailTourismViewModel by viewModels()
+    @Inject
+    lateinit var factory: ViewModelFactory
+
+    private val detailTourismViewModel: DetailTourismViewModel by viewModels { factory }
 
     companion object {
         const val EXTRA_DATA = "extra_data"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as BaseApplication).appComponent.inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_tourism)
         setSupportActionBar(toolbar)

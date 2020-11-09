@@ -1,11 +1,11 @@
 package com.ryanrvldo.tourismapp.detail
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.ryanrvldo.tourismapp.core.domain.model.Tourism
 import com.ryanrvldo.tourismapp.core.domain.usecase.TourismUseCase
+import javax.inject.Inject
 
-class DetailTourismViewModel @ViewModelInject constructor(
+class DetailTourismViewModel @Inject constructor(
     private val tourismUseCase: TourismUseCase
 ) : ViewModel() {
 
