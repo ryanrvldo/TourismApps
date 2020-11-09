@@ -2,6 +2,7 @@ package com.ryanrvldo.tourismapp.di
 
 import com.ryanrvldo.tourismapp.core.di.AppScope
 import com.ryanrvldo.tourismapp.core.di.CoreComponent
+import com.ryanrvldo.tourismapp.core.di.UseCaseModule
 import com.ryanrvldo.tourismapp.detail.DetailTourismActivity
 import com.ryanrvldo.tourismapp.favorite.FavoriteFragment
 import com.ryanrvldo.tourismapp.home.HomeFragment
@@ -10,7 +11,7 @@ import dagger.Component
 @AppScope
 @Component(
     dependencies = [CoreComponent::class],
-    modules = [AppModule::class, ViewModelModule::class]
+    modules = [UseCaseModule::class, ViewModelModule::class]
 )
 interface AppComponent {
 
@@ -23,6 +24,6 @@ interface AppComponent {
 
     fun inject(fragment: FavoriteFragment)
 
-    fun inject(activity: DetailTourismActivity)
+    fun inject(detailTourismActivity: DetailTourismActivity)
 
 }

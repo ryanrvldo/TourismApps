@@ -31,8 +31,8 @@ class RemoteDataSource @Inject constructor(private val tourismApiService: Touris
             }
         } catch (e: Exception) {
             emit(ApiResponse.Error(e.toString()))
-                Log.e(TAG, e.toString())
-            }
-        }.flowOn(Dispatchers.IO)
+            Log.e(TAG, e.toString())
+        }
+    }.flowOn(Dispatchers.IO)
 }
 

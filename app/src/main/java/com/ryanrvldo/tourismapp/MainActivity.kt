@@ -1,15 +1,16 @@
 package com.ryanrvldo.tourismapp
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import com.google.android.material.navigation.NavigationView
 import com.ryanrvldo.tourismapp.favorite.FavoriteFragment
 import com.ryanrvldo.tourismapp.home.HomeFragment
-import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -53,7 +54,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 title = getString(R.string.menu_favorite)
             }
             R.id.nav_map -> {
-                Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
+                val uri = Uri.parse("tourismapp://maps")
+                startActivity(Intent(Intent.ACTION_VIEW, uri))
             }
         }
         if (fragment != null) {

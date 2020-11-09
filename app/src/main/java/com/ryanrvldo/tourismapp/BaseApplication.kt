@@ -8,7 +8,7 @@ import com.ryanrvldo.tourismapp.di.DaggerAppComponent
 
 open class BaseApplication : Application() {
 
-    private val coreComponent: CoreComponent by lazy {
+    val coreComponent: CoreComponent by lazy {
         DaggerCoreComponent.factory().create(applicationContext)
     }
 
